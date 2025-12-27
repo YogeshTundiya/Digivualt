@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Digital Legacy Vault - Your One-Page Life Manual for securing important information for your loved ones">
+    <title>Digital Legacy Vault | One-Page Life Manual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Particle Background -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Ambient Light Effects -->
+    <div class="ambient-lights">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Elegant Header -->
+        <header class="header">
+            <div class="logo-wrapper">
+                <div class="vault-emblem">
+                    <div class="emblem-ring ring-outer"></div>
+                    <div class="emblem-ring ring-middle"></div>
+                    <div class="emblem-ring ring-inner"></div>
+                    <div class="emblem-core">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M12 9V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M12 18V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M9 12H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M18 12H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">Digital Legacy Vault</h1>
+                    <div class="brand-divider"></div>
+                    <span class="brand-tagline">Your One-Page Life Manual</span>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="vault-status">
+                    <div class="status-indicator">
+                        <span class="pulse-ring"></span>
+                        <span class="status-core"></span>
+                    </div>
+                    <span class="status-text" id="lastSaved">Vault Unlocked</span>
+                </div>
+                <div class="control-buttons">
+                    <button class="btn btn-secondary" id="exportPdfBtn" title="Export Recovery Key">
+                        <span class="btn-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                <polyline points="14,2 14,8 20,8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                                <polyline points="10,9 9,9 8,9" />
+                            </svg>
+                        </span>
+                        <span class="btn-text">Export PDF</span>
+                    </button>
+                    <button class="btn btn-secondary" id="clearAllBtn">
+                        <span class="btn-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                                <line x1="10" y1="11" x2="10" y2="17" />
+                                <line x1="14" y1="11" x2="14" y2="17" />
+                            </svg>
+                        </span>
+                        <span class="btn-text">Clear</span>
+                    </button>
+                    <button class="btn btn-primary" id="saveBtn">
+                        <span class="btn-shine"></span>
+                        <span class="btn-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                                <polyline points="17,21 17,13 7,13 7,21" />
+                                <polyline points="7,3 7,8 15,8" />
+                            </svg>
+                        </span>
+                        <span class="btn-text">Seal Vault</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-tracker">
+            <div class="progress-label">
+                <span>Vault Completion</span>
+                <span class="progress-value" id="progressValue">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-glow"></div>
+            </div>
+        </div>
+
+        <!-- Encryption Panel -->
+        <div class="encryption-panel" id="encryptionPanel">
+            <div class="encryption-header">
+                <div class="encryption-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0110 0v4" />
+                        <circle cx="12" cy="16" r="1" />
+                    </svg>
+                </div>
+                <div class="encryption-title">
+                    <h3>Zero-Knowledge Encryption</h3>
+                    <p>AES-256-GCM · PBKDF2 Key Derivation · 100,000 iterations</p>
+                </div>
+                <div class="encryption-status" id="encryptionStatus">
+                    <span class="status-badge unlocked">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 019.9-1" />
+                        </svg>
+                        Unencrypted
+                    </span>
+                </div>
+            </div>
+            <div class="encryption-body">
+                <div class="password-field">
+                    <label for="masterPassword">Master Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="masterPassword" placeholder="Enter your master password..."
+                            autocomplete="off">
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">
+                            <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar">
+                            <div class="strength-fill"></div>
+                        </div>
+                        <span class="strength-text">Enter password</span>
+                    </div>
+                </div>
+                <div class="encryption-actions">
+                    <button class="btn btn-encrypt" id="encryptBtn">
+                        <span class="btn-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0110 0v4" />
+                            </svg>
+                        </span>
+                        <span class="btn-text">Encrypt Vault</span>
+                    </button>
+                    <button class="btn btn-decrypt" id="decryptBtn" disabled>
+                        <span class="btn-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 019.9-1" />
+                            </svg>
+                        </span>
+                        <span class="btn-text">Decrypt Vault</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Financial Section -->
+            <section class="vault-card financial" id="financial-section" data-section="financial">
+                <div class="card-glow"></div>
+                <div class="card-border"></div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="icon-container">
+                            <div class="icon-bg"></div>
+                            <div class="icon-symbol">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                                    <path d="M2 10h20" />
+                                    <path d="M6 16h4" />
+                                    <circle cx="18" cy="16" r="1" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card-title-group">
+                            <span class="card-number">01</span>
+                            <h2 class="card-title">Financial Assets</h2>
+                            <p class="card-description">Bank accounts, insurance policies & investments</p>
+                        </div>
+                        <button class="expand-btn" aria-label="Toggle section">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="bankAccounts">Bank Accounts</label>
+                                <span class="field-icon">🏦</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="bankAccounts"
+                                    placeholder="Location of bank accounts, account numbers (last 4 digits), login hints..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="insurancePolicies">Insurance Policies</label>
+                                <span class="field-icon">🛡️</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="insurancePolicies"
+                                    placeholder="Life, health, property insurance details and policy locations..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="investments">Investment Accounts</label>
+                                <span class="field-icon">📈</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="investments"
+                                    placeholder="401k, stocks, bonds, crypto wallets, financial advisor contacts..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="financialNotes">Additional Notes</label>
+                                <span class="field-icon">📝</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="financialNotes"
+                                    placeholder="Any other financial information..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Digital Section -->
+            <section class="vault-card digital" id="digital-section" data-section="digital">
+                <div class="card-glow"></div>
+                <div class="card-border"></div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="icon-container">
+                            <div class="icon-bg"></div>
+                            <div class="icon-symbol">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                                    <rect x="9" y="9" width="6" height="6" />
+                                    <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card-title-group">
+                            <span class="card-number">02</span>
+                            <h2 class="card-title">Digital Presence</h2>
+                            <p class="card-description">Email, passwords & online accounts</p>
+                        </div>
+                        <button class="expand-btn" aria-label="Toggle section">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="emailAccounts">Email Accounts</label>
+                                <span class="field-icon">📧</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="emailAccounts"
+                                    placeholder="Primary email, recovery options, important contacts..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="passwordManager">Password Manager</label>
+                                <span class="field-icon">🔐</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="passwordManager"
+                                    placeholder="Master password hints, recovery kit location, emergency access..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="socialMedia">Social Media</label>
+                                <span class="field-icon">🌐</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="socialMedia"
+                                    placeholder="Facebook, LinkedIn, Instagram legacy contacts and preferences..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="digitalAssets">Digital Assets</label>
+                                <span class="field-icon">💾</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="digitalAssets"
+                                    placeholder="Photo backups, subscriptions, digital purchases, cloud storage..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Physical Section -->
+            <section class="vault-card physical" id="physical-section" data-section="physical">
+                <div class="card-glow"></div>
+                <div class="card-border"></div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="icon-container">
+                            <div class="icon-bg"></div>
+                            <div class="icon-symbol">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <polyline points="9,22 9,12 15,12 15,22" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card-title-group">
+                            <span class="card-number">03</span>
+                            <h2 class="card-title">Physical Assets</h2>
+                            <p class="card-description">Deeds, keys & important documents</p>
+                        </div>
+                        <button class="expand-btn" aria-label="Toggle section">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="propertyDeeds">Property & Titles</label>
+                                <span class="field-icon">🏠</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="propertyDeeds"
+                                    placeholder="House deeds, car titles, safe deposit box locations..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="keysLocations">Keys & Access</label>
+                                <span class="field-icon">🔑</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="keysLocations"
+                                    placeholder="Spare keys, safe combinations, garage codes, trusted neighbors..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="importantDocuments">Important Documents</label>
+                                <span class="field-icon">📄</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="importantDocuments"
+                                    placeholder="Birth certificates, passports, marriage license, will location..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="physicalNotes">Valuables & Notes</label>
+                                <span class="field-icon">💎</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="physicalNotes"
+                                    placeholder="Jewelry, art, collectibles, storage units..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Final Wishes Section -->
+            <section class="vault-card wishes" id="wishes-section" data-section="wishes">
+                <div class="card-glow"></div>
+                <div class="card-border"></div>
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="icon-container">
+                            <div class="icon-bg"></div>
+                            <div class="icon-symbol">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card-title-group">
+                            <span class="card-number">04</span>
+                            <h2 class="card-title">Final Wishes</h2>
+                            <p class="card-description">Personal messages & arrangements</p>
+                        </div>
+                        <button class="expand-btn" aria-label="Toggle section">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="funeralWishes">Memorial Preferences</label>
+                                <span class="field-icon">🕊️</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="funeralWishes"
+                                    placeholder="Funeral arrangements, burial vs cremation, ceremony preferences..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="organDonation">Medical Wishes</label>
+                                <span class="field-icon">❤️</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="organDonation"
+                                    placeholder="Organ donation, DNR status, healthcare proxy..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="personalMessages">Personal Messages</label>
+                                <span class="field-icon">💌</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="personalMessages"
+                                    placeholder="Words for your loved ones, life lessons, gratitude..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="field-header">
+                                <label for="additionalWishes">Legacy & Giving</label>
+                                <span class="field-icon">🌟</span>
+                            </div>
+                            <div class="textarea-wrapper">
+                                <textarea id="additionalWishes"
+                                    placeholder="Charitable donations, pet care, special requests..."></textarea>
+                                <div class="textarea-border"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Dead Man's Switch / Nominee Settings -->
+        <section class="nominee-section" id="nomineeSection">
+            <div class="nominee-card">
+                <div class="nominee-header">
+                    <div class="nominee-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12,6 12,12 16,14" />
+                        </svg>
+                    </div>
+                    <div class="nominee-title">
+                        <h3>Dead Man's Switch</h3>
+                        <p>Automatically share your vault with a trusted nominee after extended inactivity</p>
+                    </div>
+                    <div class="switch-status" id="switchStatus">
+                        <span class="switch-badge inactive">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="15" y1="9" x2="9" y2="15" />
+                                <line x1="9" y1="9" x2="15" y2="15" />
+                            </svg>
+                            Not Configured
+                        </span>
+                    </div>
+                </div>
+
+                <div class="nominee-body">
+                    <!-- Check-in Status -->
+                    <div class="checkin-panel">
+                        <div class="checkin-info">
+                            <div class="checkin-label">Last Check-in</div>
+                            <div class="checkin-time" id="lastCheckIn">Never</div>
+                            <div class="checkin-countdown" id="countdownDisplay">
+                                <span class="countdown-label">Time until trigger:</span>
+                                <span class="countdown-value" id="countdownValue">--</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-checkin" id="checkInBtn">
+                            <span class="btn-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                                    <polyline points="22,4 12,14.01 9,11.01" />
+                                </svg>
+                            </span>
+                            <span class="btn-text">I'm Still Here</span>
+                        </button>
+                    </div>
+
+                    <!-- Nominee Configuration -->
+                    <div class="nominee-config">
+                        <h4>Nominee Settings</h4>
+
+                        <div class="config-grid">
+                            <div class="config-field">
+                                <label for="nomineeEmail">Nominee Email Address</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                        <polyline points="22,6 12,13 2,6" />
+                                    </svg>
+                                    <input type="email" id="nomineeEmail" placeholder="trusted.person@email.com">
+                                </div>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="nomineeName">Nominee Name</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                        <circle cx="12" cy="7" r="4" />
+                                    </svg>
+                                    <input type="text" id="nomineeName" placeholder="John Doe">
+                                </div>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="inactivityPeriod">Inactivity Period</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+                                    <select id="inactivityPeriod">
+                                        <option value="30">30 Days</option>
+                                        <option value="60">60 Days</option>
+                                        <option value="90">90 Days</option>
+                                        <option value="180" selected>180 Days (Recommended)</option>
+                                        <option value="365">1 Year</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="nomineeRelation">Relationship</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                    </svg>
+                                    <select id="nomineeRelation">
+                                        <option value="spouse">Spouse / Partner</option>
+                                        <option value="child">Child</option>
+                                        <option value="parent">Parent</option>
+                                        <option value="sibling">Sibling</option>
+                                        <option value="attorney">Attorney</option>
+                                        <option value="executor">Estate Executor</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-field full-width">
+                            <label for="nomineeMessage">Personal Message to Nominee</label>
+                            <textarea id="nomineeMessage"
+                                placeholder="Write a personal message that will be included in the notification email to your nominee..."></textarea>
+                        </div>
+
+                        <div class="nominee-actions">
+                            <button class="btn btn-secondary" id="testEmailBtn">
+                                <span class="btn-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                        <polyline points="22,6 12,13 2,6" />
+                                    </svg>
+                                </span>
+                                <span class="btn-text">Send Test Email</span>
+                            </button>
+                            <button class="btn btn-activate" id="activateSwitchBtn">
+                                <span class="btn-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg>
+                                </span>
+                                <span class="btn-text">Activate Dead Man's Switch</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- How It Works -->
+                    <div class="how-it-works">
+                        <h4>How It Works</h4>
+                        <div class="steps-grid">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <strong>Regular Check-ins</strong>
+                                    <p>Click "I'm Still Here" periodically to reset the timer</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <strong>Inactivity Detection</strong>
+                                    <p>If you don't check in within your set period, the switch triggers</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <strong>Nominee Notification</strong>
+                                    <p>Your nominee receives a secure link to access your vault</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="security-badge">
+                <div class="badge-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        <path d="M9 12l2 2 4-4" />
+                    </svg>
+                </div>
+                <div class="badge-text">
+                    <span class="badge-title">Locally Secured</span>
+                    <span class="badge-subtitle">Your data never leaves this device</span>
+                </div>
+            </div>
+            <p class="copyright">© 2024 Digital Legacy Vault · Crafted with care</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                <polyline points="22,4 12,14.01 9,11.01" />
+            </svg>
+        </div>
+        <div class="toast-content">
+            <span class="toast-title">Success</span>
+            <span class="toast-message" id="toastMessage">Vault sealed successfully</span>
+        </div>
+        <button class="toast-close" onclick="hideToast()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

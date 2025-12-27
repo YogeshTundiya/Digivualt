@@ -1,0 +1,4 @@
+Step 5: Nominee Access & Recovery
+Prompt:
+
+"Final step: Build the 'Nominee Access' page. When a nominee clicks the email link, they should be taken to a page that explains they have been granted access. Since the data is encrypted, they will need a 'Recovery Key' (which the user should have shared with them physically or via a separate PDF). Create a 'Export to PDF' button on the user dashboard that prints the Master Recovery Key and a QR code for the nominee to use later."

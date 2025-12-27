@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Digital Legacy Vault - Nominee Access Portal">
+    <title>Vault Access | Digital Legacy Vault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-void: #050508;
+            --bg-deep: #0a0a0f;
+            --bg-surface: #12121a;
+            --bg-elevated: #1a1a24;
+            --bg-card: rgba(20, 20, 30, 0.7);
+            --gold: #C9A227;
+            --gold-light: #E8C547;
+            --gold-glow: rgba(201, 162, 39, 0.4);
+            --emerald: #34D399;
+            --emerald-glow: rgba(52, 211, 153, 0.3);
+            --sapphire: #60A5FA;
+            --rose: #FB7185;
+            --rose-glow: rgba(251, 113, 133, 0.3);
+            --text-pure: #FFFFFF;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --border-subtle: rgba(148, 163, 184, 0.08);
+            --border-light: rgba(148, 163, 184, 0.15);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', sans-serif;
+            --radius-md: 0.875rem;
+            --radius-lg: 1.25rem;
+            --radius-xl: 1.75rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-void);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--rose-glow) 0%, transparent 70%);
+            top: -200px;
+            right: -100px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+            bottom: -150px;
+            left: -100px;
+        }
+
+        .access-container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .access-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .access-header {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.1), transparent);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .access-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--rose), rgba(251, 113, 133, 0.5));
+            border-radius: var(--radius-lg);
+            color: var(--bg-void);
+            box-shadow: 0 0 40px var(--rose-glow);
+        }
+
+        .access-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .access-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-pure);
+            margin-bottom: 0.5rem;
+        }
+
+        .access-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .access-body {
+            padding: 2rem;
+        }
+
+        .message-box {
+            background: rgba(251, 113, 133, 0.08);
+            border-left: 4px solid var(--rose);
+            padding: 1.25rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-bottom: 2rem;
+        }
+
+        .message-label {
+            font-size: 0.75rem;
+            color: var(--rose);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-text {
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(96, 165, 250, 0.15);
+            border-radius: var(--radius-md);
+            color: var(--sapphire);
+            flex-shrink: 0;
+        }
+
+        .info-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            font-size: 0.938rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .decrypt-section {
+            background: var(--bg-deep);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .decrypt-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-pure);
+            margin-bottom: 0.5rem;
+        }
+
+        .decrypt-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.813rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+
+        .toggle-visibility {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .toggle-visibility:hover {
+            color: var(--text-primary);
+        }
+
+        .toggle-visibility svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--bg-void);
+            box-shadow: 0 4px 16px var(--gold-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--gold-glow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .security-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: var(--radius-md);
+            margin-top: 1.5rem;
+        }
+
+        .security-notice svg {
+            width: 20px;
+            height: 20px;
+            color: var(--emerald);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .security-notice p {
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .vault-content {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .vault-content.visible {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .vault-section {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vault-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .vault-section-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(201, 162, 39, 0.15);
+            border-radius: var(--radius-md);
+            color: var(--gold);
+        }
+
+        .vault-section-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .vault-section-title {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            color: var(--text-pure);
+        }
+
+        .vault-field {
+            margin-bottom: 1rem;
+        }
+
+        .vault-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .vault-field-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .vault-field-value {
+            font-size: 0.938rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .empty-value {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Error state */
+        .error-message {
+            display: none;
+            padding: 1rem;
+            background: rgba(251, 113, 133, 0.1);
+            border: 1px solid rgba(251, 113, 133, 0.3);
+            border-radius: var(--radius-md);
+            color: var(--rose);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Loading state */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .access-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .access-body {
+                padding: 1.5rem;
+            }
+
+            .access-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+    </div>
+
+    <!-- Access Container -->
+    <div class="access-container">
+        <div class="access-card">
+            <!-- Header -->
+            <div class="access-header">
+                <div class="access-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                    </svg>
+                </div>
+                <h1 class="access-title">You've Been Granted Access</h1>
+                <p class="access-subtitle">A Digital Legacy Vault has been shared with you</p>
+            </div>
+
+            <!-- Body -->
+            <div class="access-body">
+                <!-- Personal Message -->
+                <div class="message-box" id="personalMessage" style="display: none;">
+                    <div class="message-label">Personal Message</div>
+                    <p class="message-text" id="messageText"></p>
+                </div>
+
+                <!-- Vault Info -->
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Vault Owner</div>
+                            <div class="info-value" id="ownerEmail">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Access Granted</div>
+                            <div class="info-value" id="accessDate">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decrypt Section -->
+                <div class="decrypt-section">
+                    <h3 class="decrypt-title">🔐 Enter Recovery Key</h3>
+                    <p class="decrypt-description">
+                        This vault is encrypted for security. Enter the Master Recovery Key that was shared with you
+                        (from the PDF document or physical copy) to unlock the contents.
+                    </p>
+
+                    <div class="input-group">
+                        <label for="recoveryKey">Master Recovery Key</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="recoveryKey" placeholder="Enter the recovery key...">
+                            <button type="button" class="toggle-visibility" id="toggleKey">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="decryptBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" />
+                            <path d="M7 11V7a5 5 0 019.9-1" />
+                        </svg>
+                        <span>Unlock Vault</span>
+                    </button>
+
+                    <div class="error-message" id="errorMessage">
+                        Incorrect recovery key. Please check and try again.
+                    </div>
+                </div>
+
+                <!-- Security Notice -->
+                <div class="security-notice">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        <path d="M9 12l2 2 4-4" />
+                    </svg>
+                    <p>
+                        <strong>Zero-Knowledge Security:</strong> This vault uses AES-256-GCM encryption.
+                        Your recovery key never leaves your device, and all decryption happens locally in your browser.
+                    </p>
+                </div>
+
+                <!-- Decrypted Vault Content (Hidden initially) -->
+                <div class="vault-content" id="vaultContent">
+                    <h3
+                        style="font-family: var(--font-display); font-size: 1.5rem; color: var(--text-pure); margin-bottom: 1.5rem; text-align: center;">
+                        🔓 Vault Contents
+                    </h3>
+
+                    <!-- Financial Section -->
+                    <div class="vault-section" id="financialSection">
+                        <div class="vault-section-header">
+                            <div class="vault-section-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                                    <path d="M2 10h20" />
+                                </svg>
+                            </div>
+                            <h4 class="vault-section-title">Financial Assets</h4>
+                        </div>
+                        <div id="financialContent"></div>
+                    </div>
+
+                    <!-- Digital Section -->
+                    <div class="vault-section" id="digitalSection">
+                        <div class="vault-section-header">
+                            <div class="vault-section-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                                    <rect x="9" y="9" width="6" height="6" />
+                                </svg>
+                            </div>
+                            <h4 class="vault-section-title">Digital Presence</h4>
+                        </div>
+                        <div id="digitalContent"></div>
+                    </div>
+
+                    <!-- Physical Section -->
+                    <div class="vault-section" id="physicalSection">
+                        <div class="vault-section-header">
+                            <div class="vault-section-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <polyline points="9,22 9,12 15,12 15,22" />
+                                </svg>
+                            </div>
+                            <h4 class="vault-section-title">Physical Assets</h4>
+                        </div>
+                        <div id="physicalContent"></div>
+                    </div>
+
+                    <!-- Wishes Section -->
+                    <div class="vault-section" id="wishesSection">
+                        <div class="vault-section-header">
+                            <div class="vault-section-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                                </svg>
+                            </div>
+                            <h4 class="vault-section-title">Final Wishes</h4>
+                        </div>
+                        <div id="wishesContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-note">
+                Digital Legacy Vault · Securing what matters most
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // NOMINEE ACCESS PAGE LOGIC
+        // ============================================
+
+        const PBKDF2_ITERATIONS = 100000;
+
+        // Simulated encrypted vault data (in production, fetched from API using token)
+        let encryptedVault = null;
+        let accessInfo = {
+            ownerEmail: 'vault.owner@email.com',
+            accessDate: new Date().toISOString(),
+            personalMessage: ''
+        };
+
+        // Parse URL token
+        function getAccessToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('token');
+        }
+
+        // Initialize page
+        async function initPage() {
+            const token = getAccessToken();
+
+            // For demo purposes, load from localStorage if no token
+            if (!token) {
+                loadDemoData();
+            } else {
+                // In production, fetch from API: /api/vault/access/{token}
+                await fetchVaultData(token);
+            }
+
+            // Display info
+            document.getElementById('ownerEmail').textContent = accessInfo.ownerEmail;
+            document.getElementById('accessDate').textContent = new Date(accessInfo.accessDate).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            if (accessInfo.personalMessage) {
+                document.getElementById('personalMessage').style.display = 'block';
+                document.getElementById('messageText').textContent = accessInfo.personalMessage;
+            }
+        }
+
+        // Load demo data from localStorage
+        function loadDemoData() {
+            try {
+                const encrypted = localStorage.getItem('digitalLegacyVaultEncrypted');
+                if (encrypted) {
+                    encryptedVault = JSON.parse(encrypted);
+                }
+
+                const switchData = localStorage.getItem('digitalLegacySwitch');
+                if (switchData) {
+                    const parsed = JSON.parse(switchData);
+                    accessInfo.personalMessage = parsed.nomineeMessage || '';
+                    accessInfo.ownerEmail = 'Demo Vault Owner';
+                }
+            } catch (e) {
+                console.error('Error loading demo data:', e);
+            }
+        }
+
+        // Fetch vault data from API
+        async function fetchVaultData(token) {
+            try {
+                const response = await fetch(`/api/vault/access/${token}`);
+                if (!response.ok) throw new Error('Invalid or expired access token');
+
+                const data = await response.json();
+                encryptedVault = data.encryptedVault;
+                accessInfo.ownerEmail = data.ownerEmail;
+                accessInfo.accessDate = data.triggeredAt;
+                accessInfo.personalMessage = data.personalMessage;
+            } catch (e) {
+                console.error('Error fetching vault:', e);
+                // Show error state
+            }
+        }
+
+        // ============================================
+        // DECRYPTION (Same as main app)
+        // ============================================
+
+        async function deriveKey(password, salt) {
+            const encoder = new TextEncoder();
+            const passwordBuffer = encoder.encode(password);
+
+            const keyMaterial = await crypto.subtle.importKey(
+                'raw',
+                passwordBuffer,
+                'PBKDF2',
+                false,
+                ['deriveKey']
+            );
+
+            return crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: salt,
+                    iterations: PBKDF2_ITERATIONS,
+                    hash: 'SHA-256'
+                },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['decrypt']
+            );
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binary = atob(base64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        async function decryptData(encryptedBlob, password) {
+            const salt = base64ToArrayBuffer(encryptedBlob.salt);
+            const iv = base64ToArrayBuffer(encryptedBlob.iv);
+            const ciphertext = base64ToArrayBuffer(encryptedBlob.ciphertext);
+
+            const key = await deriveKey(password, new Uint8Array(salt));
+
+            const decrypted = await crypto.subtle.decrypt(
+                { name: 'AES-GCM', iv: new Uint8Array(iv) },
+                key,
+                ciphertext
+            );
+
+            const decoder = new TextDecoder();
+            return decoder.decode(decrypted);
+        }
+
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+
+        function renderField(label, value) {
+            if (!value || value.trim() === '') {
+                return `
+                    <div class="vault-field">
+                        <div class="vault-field-label">${label}</div>
+                        <div class="vault-field-value empty-value">Not provided</div>
+                    </div>
+                `;
+            }
+            return `
+                <div class="vault-field">
+                    <div class="vault-field-label">${label}</div>
+                    <div class="vault-field-value">${value}</div>
+                </div>
+            `;
+        }
+
+        function renderVaultContent(data) {
+            const fields = data.fields || {};
+
+            // Financial
+            document.getElementById('financialContent').innerHTML =
+                renderField('Bank Accounts', fields.bankAccounts) +
+                renderField('Insurance Policies', fields.insurancePolicies) +
+                renderField('Investment Accounts', fields.investments) +
+                renderField('Additional Notes', fields.financialNotes);
+
+            // Digital
+            document.getElementById('digitalContent').innerHTML =
+                renderField('Email Accounts', fields.emailAccounts) +
+                renderField('Password Manager', fields.passwordManager) +
+                renderField('Social Media', fields.socialMedia) +
+                renderField('Digital Assets', fields.digitalAssets);
+
+            // Physical
+            document.getElementById('physicalContent').innerHTML =
+                renderField('Property & Titles', fields.propertyDeeds) +
+                renderField('Keys & Access', fields.keysLocations) +
+                renderField('Important Documents', fields.importantDocuments) +
+                renderField('Valuables', fields.physicalNotes);
+
+            // Wishes
+            document.getElementById('wishesContent').innerHTML =
+                renderField('Memorial Preferences', fields.funeralWishes) +
+                renderField('Medical Wishes', fields.organDonation) +
+                renderField('Personal Messages', fields.personalMessages) +
+                renderField('Legacy & Giving', fields.additionalWishes);
+
+            // Show content
+            document.getElementById('vaultContent').classList.add('visible');
+            document.querySelector('.decrypt-section').style.display = 'none';
+        }
+
+        async function attemptDecrypt() {
+            const recoveryKey = document.getElementById('recoveryKey').value;
+            const errorEl = document.getElementById('errorMessage');
+            const btn = document.getElementById('decryptBtn');
+
+            if (!recoveryKey) {
+                errorEl.textContent = 'Please enter the recovery key.';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            if (!encryptedVault) {
+                errorEl.textContent = 'No encrypted vault data found.';
+                errorEl.classList.add('visible');
+                return;
+            }
+
+            // Show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Decrypting...';
+            errorEl.classList.remove('visible');
+
+            try {
+                const plaintext = await decryptData(encryptedVault, recoveryKey);
+                const data = JSON.parse(plaintext);
+                renderVaultContent(data);
+            } catch (e) {
+                console.error('Decryption failed:', e);
+                errorEl.textContent = 'Incorrect recovery key. Please check and try again.';
+                errorEl.classList.add('visible');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2"/>
+                        <path d="M7 11V7a5 5 0 019.9-1"/>
+                    </svg>
+                    <span>Unlock Vault</span>
+                `;
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        document.getElementById('decryptBtn').addEventListener('click', attemptDecrypt);
+
+        document.getElementById('recoveryKey').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') attemptDecrypt();
+        });
+
+        document.getElementById('toggleKey').addEventListener('click', () => {
+            const input = document.getElementById('recoveryKey');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        });
+
+        // Initialize
+        initPage();
+    </script>
+</body>
+
+</html>
